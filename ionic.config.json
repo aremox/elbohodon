@@ -1,0 +1,8 @@
+{
+  "name": "elbohodon",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

@@ -1,0 +1,45 @@
+<ion-header  class="ion-no-border">
+  <ion-toolbar color="dark">
+    <ion-title>
+      Categorías
+    </ion-title>
+  </ion-toolbar>
+
+<ion-segment scrollable 
+              mode="md" 
+              color="primary"
+              (ionChange)="cambioCategoria( $event)">
+
+  <ion-segment-button mode="md"
+                      *ngFor="let tag of tags"
+                      [value]="tag.id">
+    <ion-label text-capitalize> {{tag.name}}</ion-label>
+  </ion-segment-button>
+
+
+</ion-segment>
+
+
+
+
+
+</ion-header>
+
+<ion-content  color="dark">
+  <ion-slides [options]="slideOptions" *ngIf="posts.length < 1">
+    <ion-slide>
+      <ion-spinner  name="crescent" color="primary"></ion-spinner>
+    </ion-slide>
+</ion-slides>
+ 
+  <app-posts [posts]="posts" ></app-posts>
+
+  <ion-infinite-scroll threshold="150px"
+                        (ionInfinite)="loadData( $event)">
+    <ion-infinite-scroll-content loadingSpinner="crescent"
+                                  loadingText="Cargando data...">
+
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
+</ion-content>

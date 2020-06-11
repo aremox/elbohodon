@@ -1,0 +1,28 @@
+<ion-card color="dark" class="animated fadeIn">
+  
+  <ion-card-header>
+    <ion-card-subtitle>
+      <!-- <span class="text-primary"> {{ indice + 1}}. {{ enFavoritos }}</span> -->
+      <span *ngIf="this.noticia._embedded['wp:term'][1][0]" class="noticia-source-name"> {{ this.noticia._embedded['wp:term'][1][0].name }}</span>
+
+      <div class="noticia-more">
+        <ion-button fill="clear"
+                    (click)="lanzarMenu()">
+          <ion-icon slot="icon-only"
+                    name="ellipsis-vertical"></ion-icon>
+        </ion-button>
+
+      </div>
+
+     </ion-card-subtitle>
+    <ion-card-title (click)="abrirNoticia()">{{noticia.title.rendered}}</ion-card-title>
+  </ion-card-header>
+
+  <ion-img   *ngIf="noticia._embedded['wp:featuredmedia'][0].source_url" [src]="noticia._embedded['wp:featuredmedia'][0].source_url" (click)="abrirNoticia()"></ion-img>
+
+  <ion-card-content>
+    
+
+    <div [innerHTML]="noticia.excerpt.rendered"></div>
+  </ion-card-content>
+</ion-card>
