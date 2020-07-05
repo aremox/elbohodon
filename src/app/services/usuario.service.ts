@@ -4,7 +4,7 @@ import { environment } from '../../environments/environment';
 import { Storage } from '@ionic/storage';
 import { Usuario, UsuarioRegistrado } from '../interfaces/interfaces';
 import { NavController } from '@ionic/angular';
-import { UsuarioRegistrado } from 'src/app/interfaces/interfaces';
+
 
 const URL = environment.bhdUrl;
 
