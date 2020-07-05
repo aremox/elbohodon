@@ -1,0 +1,55 @@
+<ion-header [translucent]="true" class="ion-no-border">
+  <ion-toolbar color="dark">
+    <!-- <ion-buttons slot="start">
+      <ion-icon slot="icon-only" name="bonfire"></ion-icon>
+    </ion-buttons> -->
+    <ion-title>
+      Usuario
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content color="dark" fullscreen>
+    <app-spinner *ngIf="spinner===true"></app-spinner>
+
+
+    <form class="mainSlide ion-text-center" (ngSubmit)="actualizar(fActualizar)" #fActualizar="ngForm">
+
+
+      <ion-row>
+        <ion-col>
+          <img src="/assets/escudo_800.png">
+        </ion-col>
+      </ion-row>
+    
+      <ion-list lines="full" class="ion-no-margin ion-no-padding">
+        <ion-item>
+          <ion-label class="label" position="stacked">Nombre <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input required type="text" [(ngModel)]="usuario.name" name="name"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-label class="label" position="stacked">Correo <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input required type="email" [(ngModel)]="usuario.email" name="email"></ion-input>
+        </ion-item>
+        <!-- <ion-item>
+          <ion-label class="label" position="stacked">Password <ion-text color="danger">*</ion-text></ion-label>
+          <ion-input  #passwordEyeRegister  [type]="passwordTypeInput" clearOnEdit="false"> </ion-input>
+          <button  item-end  class="btn_eye_icon"  (click)="togglePasswordMode()">
+            <ion-icon class="label"  [name]="(passwordTypeInput === 'text')?'eye-off':'eye'"></ion-icon>
+        </button>
+        </ion-item> -->
+        <ion-item>
+          <ion-label class="label" position="stacked">Sobre ti</ion-label>
+          <ion-textarea placeholder="Para conocerte mejor" [(ngModel)]="usuario.description" name="description"></ion-textarea>
+        </ion-item>
+      </ion-list>
+
+      <ion-button type="submit"
+                    color="primary" 
+                    shape="round">
+                    Actualizar usuario
+        </ion-button>
+
+
+    </form>
+
+</ion-content>

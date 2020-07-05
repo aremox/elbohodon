@@ -16,6 +16,9 @@ export class PostComponent implements OnInit {
   @Input() indice: number;
   @Input() enFavoritos = false;
 
+  iconoGuadado: string='star';
+  imagen: string="";
+
 
   constructor(private iab: InAppBrowser,
     private actionSheetCtrl: ActionSheetController,
@@ -27,6 +30,12 @@ export class PostComponent implements OnInit {
 
   ngOnInit() {
     //console.log("tags en noticias:", this.noticia._embedded['wp:term'][1][0].name)
+    this.imagen= this.noticia._embedded['wp:featuredmedia'][0].source_url;
+    if ( this.enFavoritos ) {
+      this.iconoGuadado='star';
+    }else{
+      this.iconoGuadado='star-outline';
+    }
   }
 
   abrirNoticia(){
@@ -99,9 +108,25 @@ export class PostComponent implements OnInit {
       const toast = await this.toastCtrl.create({
         message: mensaje,
         duration: 2000,
-        position: "top"
+        position: "bottom"
       });
       toast.present();
+  }
+
+  guardarNoticia(){
+    if ( this.enFavoritos ) {
+          console.log('Borrar de favorito');
+          this.dataLocalService.borrarNoticias(this.noticia);
+          this.mostarToast("Noticia Borrada");
+          this.iconoGuadado='star-outline';
+          this.enFavoritos=false;
+    }else{
+          console.log('Favorito');
+          this.dataLocalService.guardarNoticias(this.noticia);
+          this.mostarToast("Noticia añadida");
+          this.iconoGuadado='star';
+          this.enFavoritos=true;
+    }
   }
   
 
@@ -128,7 +153,7 @@ export class PostComponent implements OnInit {
         .catch((error) => console.log('Error al compartir', error));
     }
     this.mostarToast('Navegador no soportado');
-    console.log('Navegador no soportado',this.plataforma.platforms.name);
+    console.log('Navegador no soportado: ',this.plataforma.platforms.name);
   }
 
 }

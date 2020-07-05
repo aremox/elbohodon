@@ -14,6 +14,7 @@ export class Tab1Page implements OnInit {
   posts: post[] = [];
   tags: Tag[] = [];
   postTags: any[] = [];
+  habilitado=true;
 
   slideOptions = {
     allowSlidePrev:false,
@@ -32,19 +33,28 @@ export class Tab1Page implements OnInit {
   }
 
 
+  recargar(event){
+    this.posts = [];
+    this.habilitado = true;
+    this.cargarPost(event, true);
 
-  private cargarPost(event?){
-    this.noticiasService.getPostBHD()
+  }
+
+  private cargarPost(event?, pull:boolean = false){
+
+    this.noticiasService.getPostBHD( pull )
     .subscribe(
       (respPost) =>{
      //   console.log(respPost);
          if( event ){
-       //    console.log("event");
+           console.log("event");
            event.target.complete();
-         }
-         if (respPost.length < environment.bhdPostPagina){
+         
+           if (respPost.length < environment.bhdPostPagina){
             //event.target.disabled = true;
             event.target.complete();
+           }
+
           }
           
         this.posts.push(...respPost); 
@@ -53,6 +63,7 @@ export class Tab1Page implements OnInit {
       (error ) => {
         console.log(error);
         event.target.complete();
+        this.habilitado = false;
       } );
   }
 

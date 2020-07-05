@@ -6,6 +6,7 @@ import { NoticiasComponent } from './noticias/noticias.component';
 import { PostsComponent } from './posts/posts.component';
 import { PostComponent } from './post/post.component';
 import { PipesModule } from '../pipes/pipes.module';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 
 
@@ -14,11 +15,13 @@ import { PipesModule } from '../pipes/pipes.module';
     NoticiaComponent, 
     NoticiasComponent,
     PostComponent,
-    PostsComponent
+    PostsComponent,
+    SpinnerComponent
   ],
   exports: [
     NoticiasComponent,
-    PostsComponent
+    PostsComponent,
+    SpinnerComponent
   ],
   imports: [
     CommonModule,

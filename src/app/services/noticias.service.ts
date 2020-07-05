@@ -69,7 +69,11 @@ export class NoticiasService {
   
     }
 
-    getPostBHD() {
+    getPostBHD(pull: boolean = false) {
+
+      if( pull){
+        this.headlinesPage=0;
+      }
 
       this.headlinesPage ++;
   

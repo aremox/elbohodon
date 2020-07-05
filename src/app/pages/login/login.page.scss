@@ -1,0 +1,26 @@
+
+
+.mainSlide, .mainSlide ion-slide {
+    width: 100%;
+    height: 100%;
+}
+
+img {
+    width: 120px;
+}
+
+.pick-avatar {
+    width: 80px;
+    opacity: 0.3;
+}
+
+.pick-avatar-seleccionado {
+    transition: opacity 0.5s linear;
+    opacity: 1 !important;
+}
+
+// form {
+//     --ion-background-color:var(--ion-color-dark-rgb, 34, 36, 40);
+//     --ion-color-shade: var(--ion-color-primary-shade, #3171e0) !important;
+//  }
+

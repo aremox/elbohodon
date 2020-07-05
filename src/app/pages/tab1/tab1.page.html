@@ -1,5 +1,8 @@
 <ion-header [translucent]="true" class="ion-no-border">
   <ion-toolbar color="dark">
+    <!-- <ion-buttons slot="start">
+      <ion-icon slot="icon-only" name="bonfire"></ion-icon>
+    </ion-buttons> -->
     <ion-title>
       Noticias
     </ion-title>
@@ -7,22 +10,25 @@
 </ion-header>
 
 <ion-content color="dark">
-  <ion-slides [options]="slideOptions" *ngIf="posts.length < 1">
-    <ion-slide>
-      <ion-spinner  name="crescent" color="primary"></ion-spinner>
-    </ion-slide>
-</ion-slides>
+  <app-spinner *ngIf="posts.length < 1"></app-spinner>
   
 
-  <!-- <app-noticias [noticiasCom]="noticias"></app-noticias> -->
+  <!-- Refresher -->
+  <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <!-- Post -->
   <app-posts [posts]="posts" ></app-posts>
 
+  <!-- Infinite scroll -->
+
   <ion-infinite-scroll threshold="150px"
-                        (ionInfinite)="loadData( $event)">
+                        (ionInfinite)="loadData( $event)"
+                        [disabled]="!habilitado">
     <ion-infinite-scroll-content loadingSpinner="crescent"
                                   loadingText="Cargando data...">
 
     </ion-infinite-scroll-content>
   </ion-infinite-scroll>
-  
+
 </ion-content>
