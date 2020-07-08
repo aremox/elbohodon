@@ -1,5 +1,7 @@
 import { Component, OnChanges, DoCheck, OnInit, AfterContentInit, AfterContentChecked, AfterViewInit, AfterViewChecked, OnDestroy } from '@angular/core';
 import { UsuarioService } from '../../services/usuario.service';
+import { ModalController } from '@ionic/angular';
+import { EnvioComponent } from 'src/app/components/envio/envio.component';
 
 @Component({
   selector: 'app-tabs',
@@ -19,7 +21,8 @@ OnDestroy {
 
   token:string = null;
 
-  constructor( private usuarioService: UsuarioService) {}
+  constructor( private usuarioService: UsuarioService,
+               public modalController: ModalController) {}
 
   async ngOnChanges(){
    // await this.usuarioService.cargarToken();
@@ -61,6 +64,16 @@ OnDestroy {
   //  await this.usuarioService.cargarToken();
   //  this.token = this.usuarioService.token;
   //  console.log("ngOnDestroy",this.token)
+  }
+
+  async presentModal(tipo: string) {
+    const modal = await this.modalController.create({
+      component: EnvioComponent,
+      componentProps: {
+        tipo 
+      }
+    });
+    return await modal.present();
   }
 
 }

@@ -24,16 +24,9 @@ export class UsuarioPage implements OnInit {
 
   async ngOnInit() {
     this.spinner=true;
-    this.usuario = await this.usuarioService.usuario;
-    console.log("USUARIO 1:",this.usuario)
-    if(!this.usuario.id ){
-      await this.usuarioService.actualizarUsuario();
-      this.usuario = await this.usuarioService.usuario;
-      this.spinner=false;
-    }else{
-      this.spinner=false;
-    }
-    
+    this.usuario = await this.usuarioService.getUsuario();
+    this.spinner=false;
+
   }
 
   togglePasswordMode() {
@@ -64,14 +57,18 @@ async actualizar(fActualizar: NgForm){
   const valido = await this.usuarioService.actualizarUsuario(usuarioActualizar );
     if( valido){
       // navegar al tabs
-      this.usuario = await this.usuarioService.usuario;
-      this.uiService.alertaInformativa('Usuario actualizado.');
+      this.usuario = await this.usuarioService.getUsuario();
+      this.uiService.mostrarToast('Usuario actualizado.', 'success');
       this.spinner= false;
     } else {
       // mostar alerta de usuario y contraseña no correctos
-      this.uiService.alertaInformativa('No se ha podido actualizar.');
+      this.uiService.mostrarToast('No se ha podido actualizar.', 'danger');
       this.spinner= false;
     }
+}
+
+logout(){
+
 }
 
 }

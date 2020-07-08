@@ -1,8 +1,11 @@
 <ion-header [translucent]="true" class="ion-no-border">
   <ion-toolbar color="dark">
-    <!-- <ion-buttons slot="start">
-      <ion-icon slot="icon-only" name="bonfire"></ion-icon>
-    </ion-buttons> -->
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()"
+                  color="danger">
+        <ion-icon slot="icon-only" name="exit"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>
       Usuario
     </ion-title>
@@ -11,15 +14,22 @@
 <ion-content color="dark" fullscreen>
     <app-spinner *ngIf="spinner===true"></app-spinner>
 
-
-    <form class="mainSlide ion-text-center" (ngSubmit)="actualizar(fActualizar)" #fActualizar="ngForm">
-
-
+    <ion-grid class="ion-text-center ion-padding-vertical top-20">
       <ion-row>
         <ion-col>
           <img src="/assets/escudo_800.png">
         </ion-col>
       </ion-row>
+    </ion-grid>
+    <ion-row class="ion-text-center ion-padding-vertical top-20">
+      <ion-col size="12" >
+        <ion-label>
+          <h1>Actualizar perfil</h1>
+        </ion-label>
+      </ion-col>
+    </ion-row>
+
+    <form class="mainSlide ion-text-center ion-padding-vertical" (ngSubmit)="actualizar(fActualizar)" #fActualizar="ngForm">
     
       <ion-list lines="full" class="ion-no-margin ion-no-padding">
         <ion-item>
@@ -39,13 +49,14 @@
         </ion-item> -->
         <ion-item>
           <ion-label class="label" position="stacked">Sobre ti</ion-label>
-          <ion-textarea placeholder="Para conocerte mejor" [(ngModel)]="usuario.description" name="description"></ion-textarea>
+          <ion-textarea auto-grow="true" placeholder="Para conocerte mejor" [(ngModel)]="usuario.description" name="description"></ion-textarea>
         </ion-item>
       </ion-list>
 
       <ion-button type="submit"
-                    color="primary" 
-                    shape="round">
+                    color="tertiary" 
+                    shape="round"
+                    class="ion-padding-vertical top-20">
                     Actualizar usuario
         </ion-button>
 

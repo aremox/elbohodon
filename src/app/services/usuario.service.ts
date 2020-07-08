@@ -15,7 +15,7 @@ export class UsuarioService {
 
   public token: string = null;
 
-  public usuario: UsuarioRegistrado = {}
+  private usuario: UsuarioRegistrado = {}
 
 
 
@@ -81,7 +81,6 @@ export class UsuarioService {
   }
 
   async actualizarUsuario( usuario?: UsuarioRegistrado): Promise<boolean>{
-    console.log(usuario)
     await this.cargarToken();
     if(!this.token){ 
       this.navCtrl.navigateRoot('/tabs/login');
@@ -141,6 +140,13 @@ export class UsuarioService {
   async cargarToken(){
     this.token = await this.storage.get('token') || null;
     
+  }
+
+  async getUsuario(){
+    if( !this.usuario.id){
+      await this.actualizarUsuario();
+    }
+    return {...this.usuario}
   }
 
 

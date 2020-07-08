@@ -7,6 +7,7 @@ import { PostsComponent } from './posts/posts.component';
 import { PostComponent } from './post/post.component';
 import { PipesModule } from '../pipes/pipes.module';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { EnvioComponent } from './envio/envio.component';
 
 
 
@@ -16,17 +17,22 @@ import { SpinnerComponent } from './spinner/spinner.component';
     NoticiasComponent,
     PostComponent,
     PostsComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    EnvioComponent
   ],
   exports: [
     NoticiasComponent,
     PostsComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    EnvioComponent
   ],
   imports: [
     CommonModule,
     IonicModule,
     PipesModule
+  ],
+  entryComponents: [
+    EnvioComponent
   ]
 })
 export class ComponentsModule { }

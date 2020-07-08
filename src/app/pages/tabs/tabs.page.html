@@ -37,16 +37,19 @@
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
     <ion-fab-list side="top">
-      <ion-fab-button><ion-icon name="logo-vimeo"></ion-icon></ion-fab-button>
-    </ion-fab-list>
-    <ion-fab-list side="bottom">
-      <ion-fab-button><ion-icon name="logo-facebook"></ion-icon></ion-fab-button>
+      <ion-fab-button data-desc="Enviar propuesta" (click)="presentModal('Enviar propuesta')"><ion-icon name="bulb"></ion-icon></ion-fab-button>
+      <ion-fab-button data-desc="Realizar consulta" (click)="presentModal('Realizar consulta')"><ion-icon name="help"></ion-icon></ion-fab-button>
+      <ion-fab-button data-desc="Nueva incidencia" (click)="presentModal('Nueva incidencia')"><ion-icon name="warning"></ion-icon></ion-fab-button>
     </ion-fab-list>
     <ion-fab-list side="start">
-      <ion-fab-button><ion-icon name="logo-instagram"></ion-icon></ion-fab-button>
+      <ion-fab-button><ion-icon name="information"></ion-icon></ion-fab-button>
+      <ion-fab-button><ion-icon name="help"></ion-icon></ion-fab-button>
+      <ion-fab-button><ion-icon name="warning"></ion-icon></ion-fab-button>
     </ion-fab-list>
     <ion-fab-list side="end">
-      <ion-fab-button><ion-icon name="logo-twitter"></ion-icon></ion-fab-button>
+      <ion-fab-button><ion-icon name="information"></ion-icon></ion-fab-button>
+      <ion-fab-button><ion-icon name="help"></ion-icon></ion-fab-button>
+      <ion-fab-button><ion-icon name="warning"></ion-icon></ion-fab-button>
     </ion-fab-list>
   </ion-fab>
 
