@@ -119,7 +119,7 @@ export class UsuarioService {
       this.navCtrl.navigateRoot('/tabs/login');
       return Promise.resolve(false)
     }
-
+    
 
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${this.token}`

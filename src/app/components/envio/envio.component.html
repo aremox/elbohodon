@@ -30,8 +30,11 @@
     <ion-list>
       <ion-item>
         <ion-label>Posición actual</ion-label>
-        <ion-spinner name="lines-small"></ion-spinner>
-        <ion-toggle slot="end"></ion-toggle>
+        <ion-spinner name="lines-small"
+                      *ngIf="cargandoGeo"></ion-spinner>
+        <ion-toggle slot="end"
+                    [(ngModel)]="post.posicion"
+                    (ionChange)="getGeo()"></ion-toggle>
       </ion-item>
     </ion-list>
 
@@ -41,24 +44,30 @@
   <ion-row>
     <ion-col size="6">
       <ion-button expand="full"
-                  shape="round">
+                  shape="round"
+                  (click)="camara()">
         <ion-icon slot="start" name="camera"></ion-icon>
         Cámara
       </ion-button>
     </ion-col>
     <ion-col size="6">
       <ion-button expand="full"
-                  shape="round">
+                  shape="round"
+                  (click)="galeria()">
         <ion-icon slot="start" name="images"></ion-icon>
         Galería
       </ion-button>
     </ion-col>
   </ion-row>
+  <ion-item>
+    <ion-label id="profile_image" color="primary" stacked>Fichero</ion-label>
+    <ion-input type="file" accept="image/*" (change)="changeListener($event)"></ion-input>
+  </ion-item>
 
   <ion-row>
     <ion-col size="3" *ngFor="let image of tempImages">
       <ion-card>
-        <img src="">
+        <img [src]="image |imageSanitizer">
       </ion-card>
     </ion-col>
   </ion-row>
@@ -76,7 +85,7 @@
       <ion-button expand="full"
                   shape="round"
                   (click)="crearPost()"
-                  [disabled]="post.title.length < 1 || post.content.length < 1">
+                  [disabled]="post.title.length < 1 || post.content.length < 1 || cargandoGeo">
         <ion-icon slot="center" name="send"></ion-icon>
         Enviar
       </ion-button>

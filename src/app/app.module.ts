@@ -15,6 +15,10 @@ import { SocialSharing } from '@ionic-native/social-sharing/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
+import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Camera } from '@ionic-native/camera/ngx';
+
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -25,6 +29,8 @@ import { environment } from '../environments/environment';
     SplashScreen,
     InAppBrowser,
     SocialSharing,
+    Geolocation,
+    Camera,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
