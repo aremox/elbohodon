@@ -69,6 +69,7 @@ OnDestroy {
   async presentModal(tipo: string) {
     const modal = await this.modalController.create({
       component: EnvioComponent,
+      swipeToClose: true,
       componentProps: {
         tipo 
       }

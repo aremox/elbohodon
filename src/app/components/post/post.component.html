@@ -1,35 +1,19 @@
-<ion-card color="dark" class="animated fadeIn" mode="md">
+<ion-card  class="animated fadeIn" mode="md">
   
-  <ion-item line="none" color="dark">
-   
-
-      <!-- Avatar -->
-      <!-- <ion-avatar slot="start">
-        <img src="/assets/avatars/av-1.png">
-      </ion-avatar> -->
+  <ion-item line="none" >
 
       <ion-label>
-        <h2 *ngIf="this.noticia._embedded['wp:term'][1][0]" class="noticia-source-name">  {{ this.noticia._embedded['wp:term'][1][0].name }} </h2>
+        <h2 *ngIf="this.noticia._embedded['wp:term'][1][0]" class="">  {{ this.noticia._embedded['wp:term'][1][0].name }} </h2>
         <h1 (click)="abrirNoticia()"> {{noticia.title.rendered}} </h1>
       </ion-label>
 
-      <!-- <div class="noticia-more">
-        <ion-button fill="clear"
-                    (click)="lanzarMenu()">
-          <ion-icon slot="icon-only"
-                    name="ellipsis-vertical"></ion-icon>
-        </ion-button>
-
-      </div> -->
-
   </ion-item>
-  <ion-slides pager="true">
-    <ion-slide *ngIf="noticia._embedded['wp:featuredmedia'][0].source_url" 
+  <ion-slides pager="true" *ngIf="imagen">
+    <ion-slide *ngIf="imagen" 
                 (click)="abrirNoticia()" 
                 class="image-slide"
                 [style.background-image]="(imagen | domSanitizer)">
 
-      <!-- <img src="{{noticia._embedded['wp:featuredmedia'][0].source_url}}"> -->
     </ion-slide>
   </ion-slides>
 
@@ -44,7 +28,7 @@
   </ion-card-content>
   
    <!-- Opciones -->
-   <ion-item color="dark">
+   <ion-item>
     <ion-icon name="map" slot="end"></ion-icon>
     <ion-icon name={{iconoGuadado}} slot="end" (click)="guardarNoticia()"></ion-icon>  
     <ion-icon name="share-social" slot="end" (click)="compartirNoticia()"></ion-icon>

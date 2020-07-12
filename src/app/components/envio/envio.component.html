@@ -1,3 +1,84 @@
-<p>
-  {{tipo}}
-</p>
+<ion-header no-border>
+  <ion-toolbar>
+    <ion-title>
+      {{tipo}}
+    </ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()" color="danger">Cancelar</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-list>
+    <ion-item>
+      <ion-label position="floating">Titulo</ion-label>
+      <ion-input type="text" name="title" [(ngModel)]="post.title" placeholder="Titulo"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Mensaje</ion-label>
+      <ion-textarea auto-grow="true" [(ngModel)]="post.content" placeholder="Mensaje"></ion-textarea>
+    </ion-item>
+    <ion-item>
+      <ion-label>Categoria</ion-label>
+      <ion-select [(ngModel)]="post.tags" value="61" okText="Aceptar" cancelText="Cancelar" >
+        <ion-select-option value="{{categoria.id}}" *ngFor="let categoria of categorias">{{categoria.name}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-list>
+      <ion-item>
+        <ion-label>Posición actual</ion-label>
+        <ion-spinner name="lines-small"></ion-spinner>
+        <ion-toggle slot="end"></ion-toggle>
+      </ion-item>
+    </ion-list>
+
+
+  </ion-list>
+
+  <ion-row>
+    <ion-col size="6">
+      <ion-button expand="full"
+                  shape="round">
+        <ion-icon slot="start" name="camera"></ion-icon>
+        Cámara
+      </ion-button>
+    </ion-col>
+    <ion-col size="6">
+      <ion-button expand="full"
+                  shape="round">
+        <ion-icon slot="start" name="images"></ion-icon>
+        Galería
+      </ion-button>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col size="3" *ngFor="let image of tempImages">
+      <ion-card>
+        <img src="">
+      </ion-card>
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col size="12">
+      
+    </ion-col>
+  </ion-row>
+
+
+</ion-content>
+<ion-footer class="ion-no-border">
+	<ion-toolbar position="bottom">
+      <ion-button expand="full"
+                  shape="round"
+                  (click)="crearPost()"
+                  [disabled]="post.title.length < 1 || post.content.length < 1">
+        <ion-icon slot="center" name="send"></ion-icon>
+        Enviar
+      </ion-button>
+	</ion-toolbar>
+</ion-footer>

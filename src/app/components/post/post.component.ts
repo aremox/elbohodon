@@ -12,7 +12,7 @@ import { DataLocalService } from '../../services/data-local.service';
 })
 export class PostComponent implements OnInit {
 
-  @Input() noticia: post;
+  @Input() noticia: post={};
   @Input() indice: number;
   @Input() enFavoritos = false;
 
@@ -29,8 +29,13 @@ export class PostComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    console.log(this.noticia)
     //console.log("tags en noticias:", this.noticia._embedded['wp:term'][1][0].name)
+    if ( this.noticia._embedded['wp:featuredmedia'] ) {
     this.imagen= this.noticia._embedded['wp:featuredmedia'][0].source_url;
+    }else{
+      this.imagen="https://elbohodon.aremox.com/wp-content/uploads/IMG-20200524-WA0002-2.jpg"
+    }
     if ( this.enFavoritos ) {
       this.iconoGuadado='star';
     }else{

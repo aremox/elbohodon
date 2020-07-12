@@ -1,5 +1,5 @@
 <ion-header [translucent]="true" class="ion-no-border">
-  <ion-toolbar color="dark">
+  <ion-toolbar >
     <ion-buttons slot="end">
       <ion-button (click)="logout()"
                   color="danger">
@@ -11,17 +11,17 @@
     </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content color="dark" fullscreen>
+<ion-content  fullscreen>
     <app-spinner *ngIf="spinner===true"></app-spinner>
 
-    <ion-grid class="ion-text-center ion-padding-vertical top-20">
+    <ion-grid class="ion-text-center top-20">
       <ion-row>
         <ion-col>
           <img src="/assets/escudo_800.png">
         </ion-col>
       </ion-row>
     </ion-grid>
-    <ion-row class="ion-text-center ion-padding-vertical top-20">
+    <ion-row class="ion-text-center top-20">
       <ion-col size="12" >
         <ion-label>
           <h1>Actualizar perfil</h1>

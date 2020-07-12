@@ -8,6 +8,7 @@ import { PostComponent } from './post/post.component';
 import { PipesModule } from '../pipes/pipes.module';
 import { SpinnerComponent } from './spinner/spinner.component';
 import { EnvioComponent } from './envio/envio.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -29,7 +30,8 @@ import { EnvioComponent } from './envio/envio.component';
   imports: [
     CommonModule,
     IonicModule,
-    PipesModule
+    PipesModule,
+    FormsModule
   ],
   entryComponents: [
     EnvioComponent

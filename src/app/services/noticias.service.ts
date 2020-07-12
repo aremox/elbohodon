@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RespuestaTopHeadlines, post, Tag } from '../interfaces/interfaces';
 import { environment } from '../../environments/environment';
+import { UsuarioService } from './usuario.service';
 
 
 const apiKey = environment.apiKey;
@@ -34,7 +35,8 @@ export class NoticiasService {
 
   tags: Tag[] = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private usuarioService: UsuarioService) { }
 
   private ejecutarQuery<T>( query: string) {
     query = apiUrl + query;
@@ -125,6 +127,31 @@ export class NoticiasService {
         
       
           }
+    async getCategorias(){
+      if(this.tags.length < 1){
+        await this.getTagsBHD();
+      }
+      return this.tags;
+    }
+
+    crearPost( post: any){
+      const headers= new HttpHeaders({
+        'Authorization': `Bearer ${this.usuarioService.token}`
+      });
+
+      return new Promise<boolean>( resolve=>{
+
+
+      this.http.post(`${bhdUrl}/wp/v2/posts`,post,{headers})
+      .subscribe( resp=>{
+        resolve(true)
+      },(error)=>{
+        console.log(error)
+        resolve(false)
+      })
+    });
+
+    }
 
      
 }
