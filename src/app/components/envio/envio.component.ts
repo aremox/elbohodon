@@ -6,6 +6,7 @@ import { UiServiceService } from 'src/app/services/ui-service.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 
+
 declare var window: any;
 
 @Component({
@@ -111,13 +112,15 @@ export class EnvioComponent implements OnInit {
   procesarImg(options:CameraOptions){
     this.camera.getPicture(options).then((imageData) => {
       const img = window.Ionic.WebView.convertFileSrc(imageData);
-      console.log(img);
+      this.noticiasService.subirImagenes(imageData);
  
       this.tempImages.push(img);
      }, (err) => {
       // Handle error
      });
   }
+
+  
 
   changeListener(event){
     console.log(event.target.files[0]);
@@ -135,6 +138,7 @@ export class EnvioComponent implements OnInit {
     // create blobURL, such that we could use it in an image element:
     let blobURL: string = URL.createObjectURL(blob);
     console.log(blobURL);
+    
 
      this.tempImages.push(blobURL);
   };

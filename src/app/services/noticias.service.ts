@@ -3,7 +3,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RespuestaTopHeadlines, post, Tag } from '../interfaces/interfaces';
 import { environment } from '../../environments/environment';
 import { UsuarioService } from './usuario.service';
+import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
+import { File, FileEntry } from '@ionic-native/File/ngx';
+import { WebView } from '@ionic-native/ionic-webview/ngx';
+import { FilePath } from '@ionic-native/file-path/ngx';
+import { FileChooser } from '@ionic-native/file-chooser/ngx';
 
+
+declare var window: any;
 
 const apiKey = environment.apiKey;
 const apiUrl = environment.apiUrl;
@@ -36,7 +43,12 @@ export class NoticiasService {
   tags: Tag[] = [];
 
   constructor(private http: HttpClient,
-              private usuarioService: UsuarioService) { }
+              private usuarioService: UsuarioService,
+              private fileTransfer: FileTransfer,
+              private webview: WebView,
+              private file: File,
+              private filePath: FilePath,
+              private fileChooser: FileChooser) { }
 
   private ejecutarQuery<T>( query: string) {
     query = apiUrl + query;
@@ -153,5 +165,43 @@ export class NoticiasService {
 
     }
 
-     
+    async subirImagenes( img: string ){
+      const fichero = await this.getFileInfo(img);
+      const options: FileUploadOptions = {
+        fileKey: 'file',
+        headers: {
+   //       'Content-Type': 'multipart/form-data',
+  //        'Content-Disposition': 'form-data;',
+ //         'chunkedMode': 'false',
+          'Content-Length': fichero.size,
+          'Authorization': `Bearer ${this.usuarioService.token}`
+        }
+      };
+      console.log(options);
+      const fileTransfer: FileTransferObject = this.fileTransfer.create();
+
+      fileTransfer.upload( img, `${bhdUrl}/wp/v2/media`, options)
+      .then( data => {
+        console.log(data);
+      }).catch(err => {
+        console.log('error en carga', err);
+      });
+
+    }
+
+    getFileInfo(imageData):Promise<Metadata>{
+      console.log(imageData)
+      return new Promise<Metadata>( resolve=>{
+        this.file.resolveLocalFilesystemUrl(imageData).then(fileEntry => {
+          console.log(fileEntry);
+          fileEntry.getMetadata((metadata) => {
+              console.log(metadata.size);//metadata.size is the size in bytes
+              resolve(metadata)
+          });
+      });
+      });
+       
+  }
+
+  
 }
