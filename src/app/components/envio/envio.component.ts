@@ -120,33 +120,4 @@ export class EnvioComponent implements OnInit {
      });
   }
 
-  
-
-  changeListener(event){
-    console.log(event.target.files[0]);
-    const file = event.target.files[0];
-
-  const reader = new FileReader();
-
-  reader.readAsArrayBuffer(file);
-  console.log(file);
-  reader.onload = () => {
-
-    // get the blob of the image:
-    let blob: Blob = new Blob([new Uint8Array((reader.result as ArrayBuffer))]);
-    console.log(Blob);
-    // create blobURL, such that we could use it in an image element:
-    let blobURL: string = URL.createObjectURL(blob);
-    console.log(blobURL);
-    
-
-     this.tempImages.push(blobURL);
-  };
-
-  reader.onerror = (error) => {
-
-    //handle errors
-
-  };
-  }
 }

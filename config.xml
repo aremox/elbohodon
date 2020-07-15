@@ -3,7 +3,7 @@
     <name>El Bohodón</name>
     <description>Aplicación Movil de El Bohodón</description>
     <author email="iarenas@aremox.com" href="https://aremox.com/">AremoX</author>
-    <content src="index.html" />
+    <content original-src="index.html" src="http://localhost:8100" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -206,4 +206,5 @@
         <string>Se necesita acceso para guardar las fotografias</string>
     </edit-config>
     <allow-navigation href="http://localhost:8101" sessionid="f8ef4b65" />
+    <allow-navigation href="http://localhost:8100" sessionid="fb3e73a4" />
 </widget>

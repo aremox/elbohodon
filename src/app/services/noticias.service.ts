@@ -16,6 +16,7 @@ const apiKey = environment.apiKey;
 const apiUrl = environment.apiUrl;
 
 const bhdUrl = environment.bhdUrl;
+const host = environment.host;
 const bhdCategoria =  environment.bhdCategoria;
 const bhdPostPagina = environment.bhdPostPagina;
 
@@ -167,41 +168,104 @@ export class NoticiasService {
 
     async subirImagenes( img: string ){
       const fichero = await this.getFileInfo(img);
+      const fileEntry = await this.getFileEntry(img)
+      const formData = await this.getFormData(fileEntry)
       const options: FileUploadOptions = {
         fileKey: 'file',
+      //  fileName: fileEntry.name,
+      //  httpMethod: "POST",
+      //  mimeType: 'image/jpeg',
+        chunkedMode: false,
         headers: {
-   //       'Content-Type': 'multipart/form-data',
-  //        'Content-Disposition': 'form-data;',
- //         'chunkedMode': 'false',
-          'Content-Length': fichero.size,
+          //'Content-Type': 'multipart/form-data',
+          //'Content-Disposition': 'form-data;',
+          //'cache-control': 'no-cache',
+          //'Content-Type': 'application/x-www-form-urlencoded',
+          //'Content-Length': fichero.size,
+          //'Host': host,
+          //'Content-Type': 'image/jpeg',
+          //'content-disposition': 'attachment; name="file"; filename=' + fileEntry.name,
           'Authorization': `Bearer ${this.usuarioService.token}`
         }
       };
-      console.log(options);
-      const fileTransfer: FileTransferObject = this.fileTransfer.create();
+      console.log("FileUploadOptions",fileEntry.nativeURL);
+        const fileTransfer: FileTransferObject = this.fileTransfer.create();
 
-      fileTransfer.upload( img, `${bhdUrl}/wp/v2/media`, options)
-      .then( data => {
-        console.log(data);
-      }).catch(err => {
-        console.log('error en carga', err);
-      });
+         fileTransfer.upload( fileEntry.nativeURL, `${bhdUrl}/wp/v2/media`, options)
+         .then( data => {
+           console.log(data);
+         }).catch(err => {
+           console.log('error en carga', err);
+         });
+
+
+        // this.http.post(`${bhdUrl}/wp/v2/media`,formData,{headers})
+        // .subscribe( resp=>{
+        //  console.log(resp)
+        // },(error)=>{
+        //   console.log(error)
+        // })
 
     }
 
-    getFileInfo(imageData):Promise<Metadata>{
-      console.log(imageData)
-      return new Promise<Metadata>( resolve=>{
-        this.file.resolveLocalFilesystemUrl(imageData).then(fileEntry => {
-          console.log(fileEntry);
+     getFileInfo(imageData):Promise<any>{
+      console.log("getFileInfo",imageData)
+      return new Promise<any>( async resolve=>{
+        const fileEntry = await this.getFileEntry(imageData)
+         
           fileEntry.getMetadata((metadata) => {
-              console.log(metadata.size);//metadata.size is the size in bytes
+              console.log("metadata",metadata);//metadata.size is the size in bytes
               resolve(metadata)
           });
-      });
+      
       });
        
   }
 
+  
+
+getFileEntry(imgUri):Promise<any>{
+  return new Promise<any>( resolve=>{
+    this.file.resolveLocalFilesystemUrl(imgUri).then(fileEntry => {
+      console.log(fileEntry);
+      resolve(fileEntry)
+    })
+  })
+}
+
+getFormData (file: any) {
+  return new Promise<any>( resolve=>{
+    file.file(blob =>{
+
+
+      
+        const reader = new FileReader();
+        reader.readAsArrayBuffer(blob);
+        console.log("file",blob);
+        reader.onload = () => {
+            const formData = new FormData();
+            const imgBlob = new Blob([reader.result], {
+                type: file.type
+            });
+            console.log("Blob",Blob);
+            formData.append('file', imgBlob, blob.name);
+            resolve(formData);
+        };
+        reader.onerror = (error) => {
+    
+          console.log("error en Blob: ", error)
+      
+        };
+      })
+
+
+
+
+
+    })
+  
+  
+  
+}
   
 }
