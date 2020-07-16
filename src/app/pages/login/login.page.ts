@@ -37,6 +37,7 @@ export class LoginPage implements OnInit {
 
   ionViewDidEnter() {
     this.slides.lockSwipes(true);
+    this.spinner= false;
   }
 
   ngOnInit() {}
@@ -44,6 +45,7 @@ export class LoginPage implements OnInit {
 
   async login(fLogin: NgForm ){
     this.spinner= true;
+    console.log("login")
     if( fLogin.invalid){return;}
 
     await this.obtenerToken(this.loginUser);

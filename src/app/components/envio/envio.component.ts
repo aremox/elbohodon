@@ -29,7 +29,8 @@ export class EnvioComponent implements OnInit {
     tags:61,
     categories:2,
     posicion:false,
-    coords: ''
+    coords: '',
+    img: ''
   }
   categorias: Tag[] = []
 
@@ -112,8 +113,8 @@ export class EnvioComponent implements OnInit {
   procesarImg(options:CameraOptions){
     this.camera.getPicture(options).then((imageData) => {
       const img = window.Ionic.WebView.convertFileSrc(imageData);
-      this.noticiasService.subirImagenes(imageData);
- 
+     // this.noticiasService.subirImagenes(imageData);
+      this.post.img= imageData;
       this.tempImages.push(img);
      }, (err) => {
       // Handle error

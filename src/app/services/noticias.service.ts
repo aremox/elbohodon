@@ -147,13 +147,17 @@ export class NoticiasService {
       return this.tags;
     }
 
-    crearPost( post: any){
+    async crearPost( post: any){  
+      const imagen = await this.subirImagenes(post.img)
+      return new Promise<boolean>( async resolve=>{
+      if(!imagen.id){
+        resolve(false)
+      }
+      post.featured_media = imagen.id;
+      console.log("POST: ",post)
       const headers= new HttpHeaders({
         'Authorization': `Bearer ${this.usuarioService.token}`
       });
-
-      return new Promise<boolean>( resolve=>{
-
 
       this.http.post(`${bhdUrl}/wp/v2/posts`,post,{headers})
       .subscribe( resp=>{
@@ -166,45 +170,37 @@ export class NoticiasService {
 
     }
 
-    async subirImagenes( img: string ){
+
+
+    async subirImagenes( img: string ):Promise<any>{
       const fichero = await this.getFileInfo(img);
       const fileEntry = await this.getFileEntry(img)
       const formData = await this.getFormData(fileEntry)
       const options: FileUploadOptions = {
         fileKey: 'file',
-      //  fileName: fileEntry.name,
-      //  httpMethod: "POST",
-      //  mimeType: 'image/jpeg',
+
         chunkedMode: false,
         headers: {
-          //'Content-Type': 'multipart/form-data',
-          //'Content-Disposition': 'form-data;',
-          //'cache-control': 'no-cache',
-          //'Content-Type': 'application/x-www-form-urlencoded',
-          //'Content-Length': fichero.size,
-          //'Host': host,
-          //'Content-Type': 'image/jpeg',
-          //'content-disposition': 'attachment; name="file"; filename=' + fileEntry.name,
           'Authorization': `Bearer ${this.usuarioService.token}`
         }
       };
-      console.log("FileUploadOptions",fileEntry.nativeURL);
+      return new Promise<any>( async resolve=>{
+
+
+        console.log("FileUploadOptions",fileEntry.nativeURL);
         const fileTransfer: FileTransferObject = this.fileTransfer.create();
 
          fileTransfer.upload( fileEntry.nativeURL, `${bhdUrl}/wp/v2/media`, options)
          .then( data => {
-           console.log(data);
+           console.log(JSON.parse(data.response));
+           resolve(JSON.parse(data.response))
          }).catch(err => {
            console.log('error en carga', err);
+           resolve(err)
          });
 
-
-        // this.http.post(`${bhdUrl}/wp/v2/media`,formData,{headers})
-        // .subscribe( resp=>{
-        //  console.log(resp)
-        // },(error)=>{
-        //   console.log(error)
-        // })
+      });
+      
 
     }
 

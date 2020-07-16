@@ -29,11 +29,11 @@ export class UsuarioService {
 
     return new Promise( resolve => {
       this.http.post(`${URL}/jwt-auth/v1/token`,data)
-      .subscribe( resp => {
+      .subscribe( async resp => {
         console.log(resp);
   
         if( resp['token']){
-          this.guardarToken( resp['token'])
+          await this.guardarToken( resp['token'])
           console.log("Login OK");
           resolve(true);
         } else {
@@ -63,7 +63,8 @@ export class UsuarioService {
 
     return new Promise( resolve => {
       this.http.post(`${URL}/wp/v2/users/register`,data)
-      .subscribe( resp => {
+      .subscribe( async resp => {
+          await this.login(usuario.user_nicename, usuario.user_password)
           console.log(resp['message']);
           resolve(true);
       },
@@ -78,6 +79,8 @@ export class UsuarioService {
   async guardarToken( token: string){
       this.token = token;
       await this.storage.set('token', token);
+
+      await this.validaToken();
   }
 
   async actualizarUsuario( usuario?: UsuarioRegistrado): Promise<boolean>{
@@ -147,6 +150,13 @@ export class UsuarioService {
       await this.actualizarUsuario();
     }
     return {...this.usuario}
+  }
+
+  logout(){
+    this.token = null;
+    this.usuario = null;
+    this.storage.clear();
+    this.navCtrl.navigateRoot('/tabs/login', {animated: true});
   }
 
 

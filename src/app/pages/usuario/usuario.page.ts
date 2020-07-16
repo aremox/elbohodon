@@ -68,7 +68,7 @@ async actualizar(fActualizar: NgForm){
 }
 
 logout(){
-
+ this.usuarioService.logout();
 }
 
 }
