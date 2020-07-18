@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content padding>
-
+  <app-spinner *ngIf="spinner===true"></app-spinner>
   <ion-list>
     <ion-item>
       <ion-label position="floating">Titulo</ion-label>
@@ -20,7 +20,13 @@
       <ion-label position="floating">Mensaje</ion-label>
       <ion-textarea auto-grow="true" [(ngModel)]="post.content" placeholder="Mensaje"></ion-textarea>
     </ion-item>
-    <ion-item>
+    <ion-item *ngIf="!roles.includes('administrator')">
+      <ion-label>Tipo</ion-label>
+      <ion-select [(ngModel)]="post.tipo" value="61" okText="Aceptar" cancelText="Cancelar" >
+        <ion-select-option value="{{tipo.id}}" *ngFor="let tipo of tipos">{{tipo.nombre}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item *ngIf="roles.includes('administrator')">
       <ion-label>Categoria</ion-label>
       <ion-select [(ngModel)]="post.tags" value="61" okText="Aceptar" cancelText="Cancelar" >
         <ion-select-option value="{{categoria.id}}" *ngFor="let categoria of categorias">{{categoria.name}}</ion-select-option>
@@ -82,7 +88,7 @@
       <ion-button expand="full"
                   shape="round"
                   (click)="crearPost()"
-                  [disabled]="post.title.length < 1 || post.content.length < 1 || cargandoGeo">
+                  [disabled]="post.title.length < 1 || post.content.length < 1 || cargandoGeo || enviando">
         <ion-icon slot="center" name="send"></ion-icon>
         Enviar
       </ion-button>

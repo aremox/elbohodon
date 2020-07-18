@@ -25,6 +25,10 @@ export class Tab1Page implements OnInit {
 
   ngOnInit(){
     this.cargarPost();
+    this.noticiasService.nuevoPost
+    .subscribe(post =>{
+      this.posts.unshift(post);
+    });
     
   }
 

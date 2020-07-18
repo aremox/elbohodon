@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RespuestaTopHeadlines, post, Tag } from '../interfaces/interfaces';
 import { environment } from '../../environments/environment';
 import { UsuarioService } from './usuario.service';
 import { FileTransfer, FileUploadOptions, FileTransferObject } from '@ionic-native/file-transfer/ngx';
-import { File, FileEntry } from '@ionic-native/File/ngx';
+import { File } from '@ionic-native/File/ngx';
 import { WebView } from '@ionic-native/ionic-webview/ngx';
 import { FilePath } from '@ionic-native/file-path/ngx';
 import { FileChooser } from '@ionic-native/file-chooser/ngx';
@@ -37,6 +37,7 @@ const headersBHD = new HttpHeaders({
 export class NoticiasService {
 
   headlinesPage = 0;
+  nuevoPost = new EventEmitter<post>();
 
   categoriaActual = '';
   categoriaPage = 0;
@@ -85,20 +86,25 @@ export class NoticiasService {
     }
 
     getPostBHD(pull: boolean = false) {
-
       if( pull){
         this.headlinesPage=0;
       }
-
-      this.headlinesPage ++;
+        this.headlinesPage ++;
+        return this.ejecutarQueryBHD<post[]>('/wp/v2/posts?_embed&categories='+bhdCategoria+'&per_page='+bhdPostPagina+'&page='+this.headlinesPage);
   
+    }
 
-      return this.ejecutarQueryBHD<post[]>('/wp/v2/posts?_embed&categories='+bhdCategoria+'&per_page='+bhdPostPagina+'&page='+this.headlinesPage);
-   
+    getPostByIdBHD(id:number):Promise<post>{
+      return new Promise( resolve =>{
+        this.ejecutarQueryBHD<post>('/wp/v2/posts/'+id+'?_embed&categories='+bhdCategoria+'&per_page='+bhdPostPagina+'&page='+this.headlinesPage).subscribe(resp=>{
+          resolve( resp )
+        })
+         
+      })
   
-      }
+    }
 
-      getPostByTagsBHD(id) {
+    getPostByTagsBHD(id) {
 
         if (this.categoriaActual == id ){
           this.categoriaPage++;
@@ -111,7 +117,7 @@ export class NoticiasService {
         return this.ejecutarQueryBHD<post[]>('/wp/v2/posts?_embed&categories='+bhdCategoria+'&per_page='+bhdPostPagina+'&page='+this.categoriaPage+'&tags='+id);
      
     
-        }
+    }
       
 
       getTagsBHD(): Promise<Tag[]> {
@@ -147,20 +153,27 @@ export class NoticiasService {
       return this.tags;
     }
 
-    async crearPost( post: any){  
-      const imagen = await this.subirImagenes(post.img)
-      return new Promise<boolean>( async resolve=>{
-      if(!imagen.id){
-        resolve(false)
+    async crearPost( post: any){ 
+      
+      let imagen = {id:''} 
+      if(post.img){
+        imagen = await this.subirImagenes(post.img)
       }
-      post.featured_media = imagen.id;
+      return new Promise<boolean>( async resolve=>{
+      if(imagen.id){
+        post.featured_media = imagen.id;
+      }
       console.log("POST: ",post)
       const headers= new HttpHeaders({
         'Authorization': `Bearer ${this.usuarioService.token}`
       });
 
       this.http.post(`${bhdUrl}/wp/v2/posts`,post,{headers})
-      .subscribe( resp=>{
+      .subscribe( async resp=>{
+        let post:post = resp;
+        const respuesta = await this.getPostByIdBHD(post.id);
+        this.nuevoPost.emit(respuesta)
+        console.log(respuesta)
         resolve(true)
       },(error)=>{
         console.log(error)

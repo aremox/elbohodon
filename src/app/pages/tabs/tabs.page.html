@@ -32,24 +32,10 @@
 
   </ion-tab-bar>
 
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed" >
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed">
     <ion-fab-button>
-      <ion-icon name="add"></ion-icon>
+      <ion-icon name="add" (click)="presentModal('Enviar')"></ion-icon>
     </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button data-desc="Enviar propuesta" (click)="presentModal('Enviar propuesta')"><ion-icon name="bulb"></ion-icon></ion-fab-button>
-      <ion-fab-button data-desc="Realizar consulta" (click)="presentModal('Realizar consulta')"><ion-icon name="help"></ion-icon></ion-fab-button>
-      <ion-fab-button data-desc="Nueva incidencia" (click)="presentModal('Nueva incidencia')"><ion-icon name="warning"></ion-icon></ion-fab-button>
-    </ion-fab-list>
-    <ion-fab-list side="start">
-      <ion-fab-button><ion-icon name="information"></ion-icon></ion-fab-button>
-      <ion-fab-button><ion-icon name="help"></ion-icon></ion-fab-button>
-      <ion-fab-button><ion-icon name="warning"></ion-icon></ion-fab-button>
-    </ion-fab-list>
-    <ion-fab-list side="end" *ngIf="administrador===true">
-      <ion-fab-button data-admin="Admin Notificacion " (click)="presentModal('Enviar Notificación')"><ion-icon name="information" ></ion-icon></ion-fab-button>
-      <ion-fab-button data-admin="Admin Aviso" (click)="presentModal('Enviar Aviso')"><ion-icon name="warning" ></ion-icon></ion-fab-button>
-    </ion-fab-list>
   </ion-fab>
 
 </ion-tabs>

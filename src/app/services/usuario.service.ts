@@ -14,6 +14,7 @@ const URL = environment.bhdUrl;
 export class UsuarioService {
 
   public token: string = null;
+  public roles: string[] = [];
 
   private usuario: UsuarioRegistrado = {}
 
@@ -161,7 +162,8 @@ export class UsuarioService {
 
   logout(){
     this.token = null;
-    this.usuario = {};
+    this.usuario = null;
+    this.roles = null;
     this.storage.clear();
     this.navCtrl.navigateRoot('/tabs/login', {animated: true});
   }
@@ -170,16 +172,23 @@ export class UsuarioService {
     await this.cargarToken();
     const roles = [];
     
+    if(!this.usuario.roles){
+     await this.actualizarUsuario();
+    }
+
     if(this.usuario.roles){
       if(this.usuario.roles.length < 1){ 
-        this.navCtrl.navigateRoot('/tabs/login');
+        this.actualizarUsuario();
+        console.log("no hay roles en el usuario")
         return Promise.resolve(roles)
-      }
-      if(this.usuario.roles.length > 0){
-        return Promise.resolve(this.usuario.roles)     
       }else{
-        return Promise.resolve(roles)  
+        this.roles = this.usuario.roles;
+        console.log("hay roles en el usuario", this.roles)
+        return Promise.resolve(this.usuario.roles)     
       }
+    }else{
+      console.log("no hay usuario")
+      return Promise.resolve(roles)
     }
     
 

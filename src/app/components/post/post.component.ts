@@ -10,8 +10,14 @@ import { DataLocalService } from '../../services/data-local.service';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
 })
-export class PostComponent implements OnInit {
 
+
+export class PostComponent implements OnInit {
+  slideOptions = {
+    allowSlidePrev:false,
+    allowSlideNext:false
+  }
+  
   @Input() noticia: post={};
   @Input() indice: number;
   @Input() enFavoritos = false;

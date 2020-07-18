@@ -20,11 +20,10 @@ AfterViewChecked,
 OnDestroy {
 
   token:string = null;
-  roles:string[] = [];
-  administrador:boolean = false;
+  
 
   constructor( private usuarioService: UsuarioService,
-               public modalController: ModalController) {}
+               private modalController: ModalController) {}
 
   async ngOnChanges(){
    // await this.usuarioService.cargarToken();
@@ -45,14 +44,13 @@ OnDestroy {
   async ngAfterContentInit(){
     await this.usuarioService.cargarToken();
     this.token = this.usuarioService.token;
-    this.ifAdministrador();
   //  console.log("ngAfterContentInit",this.token)
   }
   async ngAfterContentChecked(){
   //  await this.usuarioService.cargarToken();
     this.token = this.usuarioService.token;
     //this.ifAdministrador();
-  //  console.log("ngAfterContentChecked",this.token)
+    //console.log("ngAfterContentChecked",this.roles)
   }
   async ngAfterViewInit(){
   //  await this.usuarioService.cargarToken();
@@ -79,22 +77,6 @@ OnDestroy {
       }
     });
     return await modal.present();
-  }
-
-  async ifAdministrador(){
-    console.log("ifAdministrador")
-    this.roles = await this.usuarioService.getRoles();
-    if(this.roles){
-      console.log(this.administrador)
-      if(this.roles.find(x => x ==='administrator')==='administrator'){
-        this.administrador = true;
-        console.log(this.administrador)
-      }else{
-        this.administrador = false;
-        console.log(this.administrador)
-      }
-    }
-    
   }
 
 }

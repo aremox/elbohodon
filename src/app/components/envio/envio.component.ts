@@ -5,6 +5,7 @@ import { Tag } from 'src/app/interfaces/interfaces';
 import { UiServiceService } from 'src/app/services/ui-service.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 
 declare var window: any;
@@ -21,6 +22,8 @@ export class EnvioComponent implements OnInit {
   tempImages:any=[];
 
   cargandoGeo= false;
+  spinner: boolean=false;
+  enviando=false;
 
   post= {
     title:'',
@@ -30,17 +33,35 @@ export class EnvioComponent implements OnInit {
     categories:2,
     posicion:false,
     coords: '',
-    img: ''
+    img: '',
+    tipo:''
   }
-  categorias: Tag[] = []
+
+  tipos = [{
+    id:1,
+    nombre:'Nueva incidencia'
+  },{
+    id:2,
+    nombre:'Realizar consulta'
+  },{
+    id:3,
+    nombre:'Enviar propuesta'
+  }]
+
+  categorias: Tag[] = [];
+  roles:string[] = [];
+  administrador:boolean = false;
 
   constructor(private modalCtrl: ModalController,
               private noticiasService: NoticiasService,
               private uiService: UiServiceService,
               private geolocation: Geolocation,
-              private camera: Camera) { }
+              private camera: Camera,
+              private usuarioService: UsuarioService ) { }
 
-  ngOnInit(){}
+  ngOnInit(){
+    this.getRoles();
+  }
 
   async ionViewDidEnter() {
     this.categorias = await this.noticiasService.getCategorias();
@@ -49,10 +70,14 @@ export class EnvioComponent implements OnInit {
 
   async crearPost(){
     console.log(this.post)
+    this.spinner= true;
+    this.enviando= true;
     const enviadoOk = await this.noticiasService.crearPost(this.post);
     if (enviadoOk === true){
+      this.spinner= false;
       this.dismiss();
     }else{
+      this.spinner= false;
       this.uiService.mostrarToast('No se ha podido enviar.', 'danger');
     }
   }
@@ -119,6 +144,23 @@ export class EnvioComponent implements OnInit {
      }, (err) => {
       // Handle error
      });
+  }
+
+  async getRoles(){
+    console.log("getRoles")
+    this.roles = await this.usuarioService.getRoles();
+    console.log("roles: ",this.roles)
+    if(this.roles){
+      console.log(this.administrador)
+      if(this.roles.find(x => x ==='administrator')==='administrator'){
+        this.administrador = true;
+        console.log(this.administrador)
+      }else{
+        this.administrador = false;
+        console.log(this.administrador)
+      }
+    }
+    
   }
 
 }
