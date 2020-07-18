@@ -46,7 +46,7 @@
       <ion-fab-button><ion-icon name="help"></ion-icon></ion-fab-button>
       <ion-fab-button><ion-icon name="warning"></ion-icon></ion-fab-button>
     </ion-fab-list>
-    <ion-fab-list side="end">
+    <ion-fab-list side="end" *ngIf="administrador===true">
       <ion-fab-button data-admin="Admin Notificacion " (click)="presentModal('Enviar Notificación')"><ion-icon name="information" ></ion-icon></ion-fab-button>
       <ion-fab-button data-admin="Admin Aviso" (click)="presentModal('Enviar Aviso')"><ion-icon name="warning" ></ion-icon></ion-fab-button>
     </ion-fab-list>

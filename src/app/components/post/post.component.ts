@@ -29,7 +29,7 @@ export class PostComponent implements OnInit {
     ) { }
 
   ngOnInit() {
-    console.log(this.noticia)
+    //console.log(this.noticia)
     //console.log("tags en noticias:", this.noticia._embedded['wp:term'][1][0].name)
     if ( this.noticia._embedded['wp:featuredmedia'] ) {
     this.imagen= this.noticia._embedded['wp:featuredmedia'][0].source_url;

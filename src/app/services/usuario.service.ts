@@ -30,7 +30,7 @@ export class UsuarioService {
     return new Promise( resolve => {
       this.http.post(`${URL}/jwt-auth/v1/token`,data)
       .subscribe( async resp => {
-        console.log(resp);
+        //console.log(resp);
   
         if( resp['token']){
           await this.guardarToken( resp['token'])
@@ -84,6 +84,7 @@ export class UsuarioService {
   }
 
   async actualizarUsuario( usuario?: UsuarioRegistrado): Promise<boolean>{
+    console.log("actualiza usuario")
     await this.cargarToken();
     if(!this.token){ 
       this.navCtrl.navigateRoot('/tabs/login');
@@ -100,6 +101,8 @@ export class UsuarioService {
     .subscribe( resp=>{
       if(resp['id']){
         this.usuario = resp;
+        //console.log(this.usuario)
+        //this.administrador();
         resolve(true);
       }else{
         resolve(false);
@@ -115,6 +118,7 @@ export class UsuarioService {
   }
 
   async validaToken():Promise<boolean>{
+    console.log("valida token")
     const data = {}
 
     await this.cargarToken();
@@ -146,17 +150,39 @@ export class UsuarioService {
   }
 
   async getUsuario(){
+    console.log("GetUsuario")
+    //console.log(this.usuario)
     if( !this.usuario.id){
       await this.actualizarUsuario();
     }
+    
     return {...this.usuario}
   }
 
   logout(){
     this.token = null;
-    this.usuario = null;
+    this.usuario = {};
     this.storage.clear();
     this.navCtrl.navigateRoot('/tabs/login', {animated: true});
+  }
+
+  async getRoles():Promise<string[]>{
+    await this.cargarToken();
+    const roles = [];
+    
+    if(this.usuario.roles){
+      if(this.usuario.roles.length < 1){ 
+        this.navCtrl.navigateRoot('/tabs/login');
+        return Promise.resolve(roles)
+      }
+      if(this.usuario.roles.length > 0){
+        return Promise.resolve(this.usuario.roles)     
+      }else{
+        return Promise.resolve(roles)  
+      }
+    }
+    
+
   }
 
 

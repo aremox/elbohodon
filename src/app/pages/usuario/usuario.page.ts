@@ -22,9 +22,12 @@ export class UsuarioPage implements OnInit {
   constructor(private usuarioService: UsuarioService,
               private uiService: UiServiceService) { }
 
-  async ngOnInit() {
+  ngOnInit(){}
+
+  async ionViewDidEnter() {
     this.spinner=true;
     this.usuario = await this.usuarioService.getUsuario();
+    //console.log(this.usuario);
     this.spinner=false;
 
   }
