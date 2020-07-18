@@ -15,7 +15,7 @@
 
   <!-- Refresher -->
   <ion-refresher slot="fixed" (ionRefresh)="recargar($event)">
-    <ion-refresher-content></ion-refresher-content>
+    <ion-refresher-content refreshing-spinner='null' refreshing-text='Actualizando ...' pulling-icon='null' pulling-text='Actualizando ...'    ></ion-refresher-content>
   </ion-refresher>
   <!-- Post -->
    <app-posts [posts]="posts" ></app-posts> 
