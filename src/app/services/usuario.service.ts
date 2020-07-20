@@ -172,11 +172,11 @@ export class UsuarioService {
     await this.cargarToken();
     const roles = [];
     
-    if(!this.usuario.roles){
+    if(!this.usuario){
      await this.actualizarUsuario();
     }
 
-    if(this.usuario.roles){
+    if(this.usuario && this.usuario.roles ){
       if(this.usuario.roles.length < 1){ 
         this.actualizarUsuario();
         console.log("no hay roles en el usuario")
