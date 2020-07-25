@@ -1,11 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 import { NoticiasService } from 'src/app/services/noticias.service';
-import { Tag } from 'src/app/interfaces/interfaces';
+import { Tag, Tiket } from 'src/app/interfaces/interfaces';
 import { UiServiceService } from 'src/app/services/ui-service.service';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { UsuarioService } from 'src/app/services/usuario.service';
+import { IncidenciasService } from 'src/app/services/incidencias.service';
 
 
 declare var window: any;
@@ -34,17 +35,21 @@ export class EnvioComponent implements OnInit {
     posicion:false,
     coords: '',
     img: '',
-    tipo:''
+    tipo:'incidencia',
+    telefono:''
   }
 
   tipos = [{
     id:1,
+    slug: 'incidencia',
     nombre:'Nueva incidencia'
   },{
     id:2,
+    slug: 'consulta',
     nombre:'Realizar consulta'
   },{
     id:3,
+    slug: 'propuesta',
     nombre:'Enviar propuesta'
   }]
 
@@ -57,7 +62,8 @@ export class EnvioComponent implements OnInit {
               private uiService: UiServiceService,
               private geolocation: Geolocation,
               private camera: Camera,
-              private usuarioService: UsuarioService ) { }
+              private usuarioService: UsuarioService,
+              private incidenciasService:IncidenciasService ) { }
 
   ngOnInit(){
     this.getRoles();
@@ -66,6 +72,36 @@ export class EnvioComponent implements OnInit {
   async ionViewDidEnter() {
     this.categorias = await this.noticiasService.getCategorias();
     console.log(this.categorias)
+  }
+
+  async crear(){
+    console.log(this.post)
+    this.spinner= true;
+    this.enviando= true;
+    if(this.roles.find(x => x ==='administrator')==='administrator'){
+      this.crearPost();
+    }
+    if(this.post.tags){
+      this.crearIncidencua();
+    }
+  }
+
+  async crearIncidencua(){
+    let tiket:Tiket = {
+      title: this.post.title,
+      content: 'Teléfono: '+this.post.telefono+'<br>'+this.post.content,
+      status: this.post.status,
+      ticket_channel: 'standard-ticket-form',
+      ticket_type: this.post.tipo
+    } 
+    const enviadoOk = await this.incidenciasService.enviarTiket(tiket);
+    if (enviadoOk === true){
+      this.spinner= false;
+      this.dismiss();
+    }else{
+      this.spinner= false;
+      this.uiService.mostrarToast('No se ha podido enviar.', 'danger');
+    }
   }
 
   async crearPost(){

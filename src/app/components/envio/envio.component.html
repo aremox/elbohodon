@@ -12,6 +12,10 @@
 <ion-content padding>
   <app-spinner *ngIf="spinner===true"></app-spinner>
   <ion-list>
+    <ion-item *ngIf="!roles.includes('administrator')">
+      <ion-label position="floating">Teléfono</ion-label>
+      <ion-input type="text" name="telefono" [(ngModel)]="post.telefono" placeholder="987654321"></ion-input>
+    </ion-item>
     <ion-item>
       <ion-label position="floating">Titulo</ion-label>
       <ion-input type="text" name="title" [(ngModel)]="post.title" placeholder="Titulo"></ion-input>
@@ -22,8 +26,8 @@
     </ion-item>
     <ion-item *ngIf="!roles.includes('administrator')">
       <ion-label>Tipo</ion-label>
-      <ion-select [(ngModel)]="post.tipo" value="61" okText="Aceptar" cancelText="Cancelar" >
-        <ion-select-option value="{{tipo.id}}" *ngFor="let tipo of tipos">{{tipo.nombre}}</ion-select-option>
+      <ion-select [(ngModel)]="post.tipo" value="incidencia" okText="Aceptar" cancelText="Cancelar" placeholder="Seleccione un tipo">
+        <ion-select-option value="{{tipo.slug}}" *ngFor="let tipo of tipos">{{tipo.nombre}}</ion-select-option>
       </ion-select>
     </ion-item>
     <ion-item *ngIf="roles.includes('administrator')">
@@ -87,8 +91,8 @@
 	<ion-toolbar position="bottom">
       <ion-button expand="full"
                   shape="round"
-                  (click)="crearPost()"
-                  [disabled]="post.title.length < 1 || post.content.length < 1 || cargandoGeo || enviando">
+                  (click)="crear()"
+                  [disabled]="post.title.length < 1 || post.content.length < 1 || post.telefono.length < 9 || cargandoGeo || enviando">
         <ion-icon slot="center" name="send"></ion-icon>
         Enviar
       </ion-button>

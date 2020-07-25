@@ -402,4 +402,40 @@ export interface ExtraCapabilities {
 }
 
 
+export interface Tiket {
+  id?: number;
+  date?: string;
+  date_gmt?: string;
+  guid?: Guid;
+  modified?: string;
+  modified_gmt?: string;
+  slug?: string;
+  status?: string;
+  type?: string;
+  link?: string;
+  title?: string;
+  content?: string;
+  author?: number;
+  'ticket-tag'?: any[];
+  ticket_type?: string;
+  ticket_channel?: string;
+  state?: string;
+  assignee?: number;
+  telefono?: number;
+  'secondary-assignee'?: number;
+  'tertiary-assignee'?: number;
+  'customer-reply-count'?: number;
+  'agent-reply-count'?: number;
+  'total-reply-count'?: number;
+  'time-calculated'?: number;
+  'time-adjustments'?: number;
+  'time-final'?: number;
+  'time-adjustments-type'?: string;
+  'time-notes'?: string;
+  _links?: Links;
+  _embedded?: Embedded;
+}
 
+interface Guid {
+  rendered: string;
+}
